@@ -14,9 +14,9 @@ This is a fork of shadowmint's go-static-linking project
 
 ## Basic design of Cmake file
 
-   Step 1 - create static C library (libHello.a)
-   Step 2 - create .go 'bridge' from .go.in template
-   Step 3 - build executable binary by calling 'go build'
+    Step 1 - create static C library (libHello.a)
+    Step 2 - create .go 'bridge' from .go.in template
+    Step 3 - build executable binary by calling 'go build'
 
 ## Windows(TM)
 

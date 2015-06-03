@@ -20,7 +20,25 @@
 # from a template 'go.in' file, by modifying the paths in the template 
 # file.
 #
+
+#
+# The way it works is a bit unusual compared to most Cmake situations
+# Go has it's own build system built into the language, so cmake is not
+# really needed. What is needed, however, is to separate the 'build' 
+# files from the 'source' files. 
+#
+# In this situation, we are building C library files (.a on linux/bsd and
+# .lib on win*)... but we are also building a bridge .go file. 
+#
+# Go also needs files to be layed out in a certain directory structure.
+#
+# The solution is to build the C library files as normal, generate the 
+# .go file as a standard dependency automatically, then 
+# copy any .go file that has changed since last build from the source tree
+# to the binary tree. 
+
 # C-library files are typically named '.a' files on un*x and '.lib' on Win*
+
 
 cmake_minimum_required (VERSION 2.8)
 
