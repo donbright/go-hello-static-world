@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Modified by Don Bright 2015
+
 #
 # This file will help to build and statically-link a C language library
 # file (.a on un*x, .lib on win*) to the Go language. It creates a 
