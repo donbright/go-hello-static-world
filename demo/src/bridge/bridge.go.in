@@ -3,12 +3,12 @@ package bridge
 import "fmt"
 
 // #cgo CFLAGS: -I${C_INCLUDE_PATH}
-// #cgo LDFLAGS: ${C_LIBRARY_PATH}
-// #include <junk.h>
+// #cgo LDFLAGS: -L${C_LIBRARY_PATH} -l${C_LIBRARY_NAME}
+// #include <hello.h>
 import "C"
 
 func Run() {
-  fmt.Printf("Invoking c library...\n")
-  C.x(10)
+  fmt.Printf("Invoking c statically linked library...\n")
+  C.hello(10)
   fmt.Printf("Done\n")
 }

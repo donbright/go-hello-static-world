@@ -23,10 +23,6 @@
 cmake_minimum_required (VERSION 2.8)
 project (Hello)
 
-# Set up library file name. In spirit of Go "Export" syntax, use 
-# capitalization for the library name.
-set(Hello "Hello")
-
 # Debug mode?
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -37,31 +33,36 @@ if(NOT WIN32)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 endif()
 
-# source files
-file(SOURCES ${PROJECT_SOURCE_DIR}/src/hello.c)
-include_directories(${PROJECT_SOURCE_DIR}/include)
+### Build C library files
+# in the spirit of go's Exported variable syntax, capitalize the filenames
+# for the library files.
 
-# Build library files (.a files) under 'lib' subdir
+# Make sure C library files (.a files) are built under 'lib' subdir
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
-# Build library files
-add_library(${Hello} ${SOURCES})
-target_link_libraries(${Hello})
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Create .go bridge file using 'go.in' template. Mostly by modifying paths
-# to point to the proper include directory and the library files
+set(SOURCES src/hello.c)
+add_library( Hello ${SOURCES})
+# target_link_libraries( Hello )
+
+# Create .go bridge file using 'go.in' template. This is done by modifying
+# paths to point to the proper include directory and the library files
 
 set(INFILE ${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go.in)
 set(OUTFILE ${PROJECT_BINARY_DIR}/src/bridge/bridge.go)
 set(C_INCLUDE_PATH ${PROJECT_SOURCE_DIR}/include)
-set(C_LIBRARY_PATH $<TARGET_FILE:Hello>)
+set(C_LIBRARY_PATH ${PROJECT_BINARY_DIR}/lib)
+set(C_LIBRARY_NAME Hello)
 
-message(STATUS "Creating .go bridge file ${OUTFILE}")
-message(STATUS "from template input file ${INFILE}" )
+message(STATUS "Creating .go bridge file")
+message(STATUS "Input template:${INFILE}" )
+message(STATUS "   Output file:${OUTFILE}")
 message(STATUS "replacing C_INCLUDE_PATH with ${C_INCLUDE_PATH}")
 message(STATUS "replacing C_LIBRARY_PATH with ${C_LIBRARY_PATH}")
+message(STATUS "replacing C_LIBRARY_FILENAME with ${C_LIBRARY_NAME}")
 
 configure_file( ${INFILE} ${OUTFILE} )
 
