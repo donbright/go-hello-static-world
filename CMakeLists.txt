@@ -15,56 +15,88 @@
 # Modified by Don Bright 2015
 
 #
-# This file will help to build and statically-link a C language library
-# file (.a on un*x, .lib on win*) to the Go language. It creates a 
-# .go "bridge" file automatically from a template 'go.in' file, by 
-# modifying the paths in the template file.
+# This file will help to build and statically-link a C language library 
+# file to the Go language. It creates a .go "bridge" file automatically 
+# from a template 'go.in' file, by modifying the paths in the template 
+# file.
 #
-
+# C-library files are typically named '.a' files on un*x and '.lib' on Win*
 
 cmake_minimum_required (VERSION 2.8)
+
 project (Hello)
 
-# Debug mode?
-set(CMAKE_BUILD_TYPE Debug)
-
 # Flags
-if(NOT WIN32)
-  set(CMAKE_C_FLAGS "-Wall -pedantic -Wimplicit-function-declaration -Wreturn-type -Wstrict-prototypes -Wextra -fPIC")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
-endif()
+#if(NOT WIN32)
+#  set(CMAKE_C_FLAGS "-Wall -pedantic -Wimplicit-function-declaration -Wreturn-type -Wstrict-prototypes -Wextra -fPIC")
+#  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
+#  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+#endif()
 
-### Build C library files
-# in the spirit of go's Exported variable syntax, capitalize the filenames
-# for the library files.
+
+####
+#### C Library section
+####
+
+set(C_LIBRARY_NAME hello)
 
 # Make sure C library files (.a files) are built under 'lib' subdir
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-set(SOURCES src/hello.c)
-add_library( Hello ${SOURCES})
-# target_link_libraries( Hello )
+set(CSOURCES src/hello.c)
+add_library( ${C_LIBRARY_NAME} ${CSOURCES})
 
-# Create .go bridge file using 'go.in' template. This is done by modifying
-# paths to point to the proper include directory and the library files
+
+
+
+####
+#### Go language section
+####
+
+# Create bridge.go bridge file using 'go.in' template
 
 set(INFILE ${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go.in)
 set(OUTFILE ${PROJECT_BINARY_DIR}/src/bridge/bridge.go)
 set(C_INCLUDE_PATH ${PROJECT_SOURCE_DIR}/include)
 set(C_LIBRARY_PATH ${PROJECT_BINARY_DIR}/lib)
-set(C_LIBRARY_NAME Hello)
 
 message(STATUS "Creating .go bridge file")
 message(STATUS "Input template:${INFILE}" )
 message(STATUS "   Output file:${OUTFILE}")
 message(STATUS "replacing C_INCLUDE_PATH with ${C_INCLUDE_PATH}")
 message(STATUS "replacing C_LIBRARY_PATH with ${C_LIBRARY_PATH}")
-message(STATUS "replacing C_LIBRARY_FILENAME with ${C_LIBRARY_NAME}")
+message(STATUS "replacing C_LIBRARY_NAME with ${C_LIBRARY_NAME}")
 
 configure_file( ${INFILE} ${OUTFILE} )
+
+# Populate the build tree with .go files
+##.. foreach... (not implemented)
+## copy if changed... (not implemented)
+add_custom_command(
+  OUTPUT demo.go
+  COMMAND cp ../demo/demo.go .
+  COMMENT "Copying .go files"
+)
+add_custom_target( gofiles DEPENDS demo.go )
+add_dependencies( hello gofiles )
+
+# Call 'go build' to generate executable file
+#
+# Note that we set the GOPATH environment variable here before running
+# go build. This is necessary for go build to work. However it may not
+# run correctly depending on the 'shell' program used to execute the
+# 'go build' command. It should work on most Linux/BSD command shells. It may
+# need to be modified for other platforms. 
+
+add_custom_command(
+  TARGET ${C_LIBRARY_NAME}
+  POST_BUILD
+  COMMAND GOPATH=${PROJECT_BINARY_DIR} go build
+  COMMENT "Running go build"
+)
+
+
 
