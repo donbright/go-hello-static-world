@@ -1,7 +1,7 @@
 #include <junk.h>
 #include <stdio.h>
 
-int x(int y) {
+int hello(int y) {
   printf("Hello World\n");
   return y;
 }

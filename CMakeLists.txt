@@ -37,10 +37,8 @@ if(NOT WIN32)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 endif()
 
-# Collect source files
-file(GLOB_RECURSE SOURCES src/*.c*)
-
-# libary headers
+# source files
+file(SOURCES ${PROJECT_SOURCE_DIR}/src/hello.c)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Build library files (.a files) under 'lib' subdir
