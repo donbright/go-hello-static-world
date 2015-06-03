@@ -1,56 +1,30 @@
 # Go-C static linked demo
 
-Quick demo to show how to statically link a c library to a go application.
+Use Go language with statically linked C libraries, with CMake build system.
 
-## Quick start
+This is a fork of shadowmint's go-static-linking project
+
+## Usage
 
     mkdir build
     cd build
     cmake ..
     make
-
-    cd ..
-    cd demo
-    export GOPATH=`pwd`
-    go build
     ./demo
 
-## Windows
+## Basic design of Cmake file
 
-Building and running on windows is complicated. Long story short, do this:
+   Step 1 - create static C library (libHello.a)
+   Step 2 - create .go 'bridge' from .go.in template
+   Step 3 - build executable binary by calling 'go build'
 
-    mkdir build
-    cd build
-    cmake .. -G "MSYS Makefiles"
-    make
+## Windows(TM)
 
-    cd ..
-    cd demo
-    export GOPATH=`pwd`
-    go build
-    ./demo
+Untested in this fork.
 
-### Windows notes
+## Differences from shadowmint's original code
 
-You must use MSYS for cgo. Visual studio is not supported.
-Install MSYS and run the MSYS shell for the commands.
+1. remove usage of separate cmake BindConfig.txt file
+2. put all generated files under 'build' directory (bridge.go)
+3. move call of 'go build' into cmake process
 
-You must *also* use the *right* MSYS. The default MSYS is usually
-32-bit; the default windows install of go is 64-bit. That won't work.
-Either install the 64-bit version of MSYS, or the 32-bit version of
-go.
-
-You have to use the MSYS shell. Using the standard shell, or powershell
-won't work; the right commands are not the PATH and `go build` won't
-work.
-
-Once again, no, visual studio is not supported. If you run:
-
-    cmake ..
-
-The default is to generate a visual studio projet. Don't use this,
-the static .lib file generated is not compatible.
-
-Finally, yes, it does actually work. :)
-
-![yay](https://raw.github.com/shadowmint/go-static-linking/master/media/win32.png)
