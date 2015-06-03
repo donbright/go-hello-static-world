@@ -2,8 +2,8 @@ package bridge
 
 import "fmt"
 
-// #cgo CFLAGS: -IC:/projects/go-static-linking/include
-// #cgo LDFLAGS: C:/projects/go-static-linking/build/libgb.a
+// #cgo CFLAGS: -I/tmp/go-static-linking/include
+// #cgo LDFLAGS: /tmp/go-static-linking/build/libgb.a
 // #include <junk.h>
 import "C"
 

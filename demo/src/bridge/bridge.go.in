@@ -2,8 +2,8 @@ package bridge
 
 import "fmt"
 
-// #cgo CFLAGS: -I${INCLUDE_PATH}
-// #cgo LDFLAGS: ${LIBRARY_PATH}
+// #cgo CFLAGS: -I${C_INCLUDE_PATH}
+// #cgo LDFLAGS: ${C_LIBRARY_PATH}
 // #include <junk.h>
 import "C"
 

@@ -13,8 +13,17 @@
 # limitations under the License.
 
 cmake_minimum_required (VERSION 2.8)
+message(STATUS "Running BindConfig.txt")
 SET(HERE "${CMAKE_ARGV3}")
 SET(INCLUDE_PATH "${CMAKE_ARGV4}")
 SET(LIBRARY_PATH "${CMAKE_ARGV5}")
-message("${LIBRARY_PATH} ${INCLUDE_PATH}")
-configure_file(${HERE}/demo/src/bridge/bridge.go.in ${HERE}/demo/src/bridge/bridge.go)
+SET(SOURCE_PATH "${CMAKE_ARGV6}")
+message(STATUS "HERE: ${HERE}")
+message(STATUS "LIBRARY_PATH: ${LIBRARY_PATH}")
+message(STATUS "INCLUDE_PATH: ${INCLUDE_PATH}")
+message(STATUS "SOURCE_PATH: ${SOURCE_PATH}")
+configure_file(
+  ${SOURCE_PATH}/demo/src/bridge/bridge.go.in
+  ${HERE}/demo/src/bridge/bridge.go
+)
+message(STATUS "End BindConfig.txt")

@@ -32,12 +32,21 @@ file(GLOB_RECURSE SOURCES src/*.c*)
 # libary headers
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Build library
+# Build library files (.a files) under 'lib' subdir
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+
+# Build library files
 add_library(${LIB} ${SOURCES})
 target_link_libraries(${LIB})
 
-# Generate cgo wrapper
-add_custom_command(TARGET gb
-                   POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -P ${PROJECT_SOURCE_DIR}/BindConfig.txt ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include $<TARGET_FILE:gb>
-)
+# Modify go 'template' bridge file with the appropriate paths
+set(C_INCLUDE_PATH ${PROJECT_SOURCE_DIR}/include)
+set(C_LIBRARY_PATH ${PROJECT_BINARY_DIR})
+set(INFILE ${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go.in)
+set(OUTFILE ${PROJECT_BINARY_DIR}/src/bridge/bridge.go)
+message(STATUS "Replacing paths in ${INFILE}...")
+message(STATUS "Saving to... ${OUTFILE}" )
+configure_file( ${INFILE} ${OUTFILE} )
+
