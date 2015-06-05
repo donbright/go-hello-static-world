@@ -10,22 +10,19 @@ This is a fork of shadowmint's go-static-linking project
 
 The source tree is layed out as follows:
 
-    src/hello/hello.go
-    src/bridge/bridge.go.in
-    src/c/world.c
-    src/c/world.h
+    src/hello/hello.go       # main go package
+    src/bridge/bridge.go.in  # template, will generate 'glue' .go package
+    src/c/world.c            # c code all lives under 'c' path
+    src/c/world.h            
+    CMakeLists.txt           # Cmake build file
 
-As you can see, this is a sort of 'hybrid' go project layout. The main 
-Go package is under 'hello'. The 'bridge' Go package contains a template 
-file, which is modified during cmake to create a 'bridge' .go file that 
-will enable static linking during 'go build'. The c code is all kept 
-under it's own directory.
-
-To build, run the following command
+As you can see, this is a sort of 'hybrid' go project layout. It 
+has subdirs under 'src' for go packages. But it also has c code and
+a Cmake build file. To build, run the following command
    
     mkdir build && cd build && cmake .. && VERBOSE=1 make
 
-Cmake & build will go through the following steps:
+Cmake & go's builder will go through the following steps:
 
     Create bridge .go file from the bridge.go.in template
     Create c library (.a/.lib) file from c source code
@@ -48,11 +45,12 @@ Running ./bin/hello should produce output like this:
 
 ## GOBIN, GOPATH, What do to do after 'make'
 
-To re-run the go build under the build tree, you should set GOBIN and GOPATH
-environment variables in your command shell. 
+To rebuild the C code, just type 'make' from the command shell.
 
-The values for GOBIN and GOPATH are printed during the cmake process. Here
-is an example:
+To rebuild the 'go' code, it's a bit more complicted. You will need to 
+set your GOBIN and GOPATH environment variables. The values for GOBIN 
+and GOPATH are printed during the cmake process. Here is an example from 
+a machine where the project was git cloned under the /tmp/ directory:
 
     GOPATH=/tmp/go-static-linking/build:/tmp/go-static-linking
     GOBIN=/tmp/go-static-linking/build/bin
@@ -61,9 +59,14 @@ If you dont know how to set env variables in your shell, do a quick google
 search on it and then you will be able to properly copy/paste those values.
 Or fork/submit a patch to make this easier somehow.
 
-After this you can type 'go build hello' or 'go install hello'
+After this you can type 'go build hello' or 'go install hello' and it should
+build and link the 'bin/hello' file again. 
 
-## Static glue of bridge.go.in and bridge.go
+However if the bridge code and/or the C code changes, you will need to 
+possibly rerun make and/or cmake to regenerate the C library file (.lib or .a)
+and also regenerate the bridge.go glue code.
+ 
+## On the static glue of bridge.go.in and bridge.go
 
 The magic static glue of the bridge file works as follows:
 
