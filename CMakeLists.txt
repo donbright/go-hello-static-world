@@ -42,17 +42,18 @@ project (hello)
 #### C Library section
 ####
 
-set(C_LIBRARY_NAME hello)
+set(C_INCLUDE_PATH ${PROJECT_SOURCE_DIR}/src/c)
+set(C_LIBRARY_NAME world)
+set(CSOURCES src/c/world.c)
 
 # Make sure C library files (.a/.lib files) are built under 'lib' subdir
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_BINARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${C_INCLUDE_PATH})
 
-set(CSOURCES src/hello.c)
-add_library( ${C_LIBRARY_NAME} ${CSOURCES})
+add_library( ${C_LIBRARY_NAME} ${CSOURCES} )
 
 
 
@@ -65,7 +66,6 @@ add_library( ${C_LIBRARY_NAME} ${CSOURCES})
 
 set(INFILE ${PROJECT_SOURCE_DIR}/src/bridge/bridge.go.in)
 set(OUTFILE ${PROJECT_BINARY_DIR}/src/bridge/bridge.go)
-set(C_INCLUDE_PATH ${PROJECT_SOURCE_DIR}/include)
 set(C_LIBRARY_PATH ${PROJECT_BINARY_DIR}/lib)
 
 message(STATUS "Creating .go bridge file")

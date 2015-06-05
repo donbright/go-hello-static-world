@@ -1,1 +1,0 @@
-int hello(int y);

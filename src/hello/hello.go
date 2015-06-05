@@ -1,7 +1,9 @@
 package main 
 
 import "bridge"
+import "fmt"
 
 func main() {
-  bridge.Run()
+  fmt.Printf("Hello ")
+  bridge.PrintWorld()
 }
