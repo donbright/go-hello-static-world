@@ -94,12 +94,12 @@ Untested in this fork.
 
 ## Why?
 
-    When transforming a program from C to Go, where the program is
-    50,000 lines of C, it may be easier to transform it in small pieces
-    and of course some C libraries may not be transformable ever. 
+When transforming a program from C to Go, where the program is
+50,000 lines of C, it may be easier to transform it in small pieces
+and of course some C libraries may not be transformable ever. 
 
-    Static linking is a nice way to simplify the user experience. 
-    No dynamic libraries to worry about.
+Static linking is a nice way to simplify the user experience. 
+No dynamic libraries to worry about.
 
 Thanks for reading. Thanks shadowmint.
 
