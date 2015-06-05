@@ -90,7 +90,7 @@ Untested in this fork.
 
 ## See Also
 
-    (http://golang.org/doc/code.html How to Write Go Code) (golang.org)
+    (http://golang.org/doc/code.html) How to Write Go Code (golang.org)
 
 ## Why?
 
