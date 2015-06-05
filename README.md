@@ -16,9 +16,10 @@ The source tree is layed out as follows:
     src/c/world.h
 
 As you can see, this is a sort of 'hybrid' go project layout. The main 
-package is under 'hello'. There is a special subdir for c code. The 
-'bridge' package contains a template file, that will be able to form
-a static glue between C and go during the cmake/make process.
+Go package is under 'hello'. The 'bridge' Go package contains a template 
+file, which is modified during cmake to create a 'bridge' .go file that 
+will enable static linking during 'go build'. The c code is all kept 
+under it's own directory.
 
 To build, run the following command
    
@@ -89,6 +90,16 @@ Untested in this fork.
 
 ## See Also
 
-    http://golang.org/doc/code.html How to Write Go Code
+    [http://golang.org/doc/code.html How to Write Go Code] (golang.org)
+
+## Why?
+
+    When transforming a program from C to Go, where the program is
+    50,000 lines of C, it may be easier to transform it in small pieces
+    and of course some C libraries may not be transformable. 
+
+    Static linking is a nice way to simplify distribution of the generated
+    binary file. 
 
 Thanks for reading. Thanks shadowmint.
+
