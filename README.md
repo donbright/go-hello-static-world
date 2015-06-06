@@ -50,7 +50,7 @@ The process is as follows:
 1. **cmake** creates a bridge.go file from the bridge.go.in template
 2. **cmake** creates a main Makefile (and sub Makefiles under ./CMakeFiles)
 3. **make** creates a static C library (.a/.lib file) from c source code
-4. **make** calls 'go install' 
+4. **make** calls 'go install' (every time. make doens't check go dependencies)
 5. **go install** builds executable and links with c library using #cgo
 
 The resulting binary tree will hopefully be as follows:
