@@ -11,7 +11,7 @@ This is a fork of shadowmint's go-hello-static-world project
 To build and run, copy/paste these commands into a terminal:
    
     mkdir build && cd build && cmake ..
-    VERBOSE=1 make
+    make
     ./bin/hello
 
 ## Status
@@ -54,6 +54,16 @@ Running ./bin/hello should produce output like this:
     Hello (Invoking c statically linked library...)
     World
     (Done)
+
+## How to get more debug info of the build process
+
+Set your environment variable VERBOSE to 1
+
+    export VERBOSE=1 # bash shell
+    setenv VERBOSE 1 # csh shell
+    mkdir build && cd build && cmake ..
+    make
+    ./bin/hello
 
 ## GOBIN, GOPATH, What do to do after 'make'
 

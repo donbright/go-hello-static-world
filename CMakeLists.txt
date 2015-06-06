@@ -14,10 +14,8 @@
 
 # Modified by Don Bright 2015
 
-
-# This cmake file is intended to help with the situation where you have 
-# a Go language program that needs to call C static libraries. Please 
-# see the README.md file for a fuller explanation of how this process 
+# This Cmake file intends to help linking Go code statically with C code
+# Please see the README.md file for a fuller explanation of how this process 
 # works.
 
 cmake_minimum_required (VERSION 2.8)
@@ -59,38 +57,22 @@ set(LDFLAGS "-L${C_LIBRARY_PATH} -l${C_LIBRARY_NAME}")
 
 message(STATUS "Creating .go bridge file")
 message(STATUS "Input template:${INFILE}" )
-message(STATUS "   Output file:${OUTFILE}")
-message(STATUS "replacing CFLAGS with ${CFLAGS}")
-message(STATUS "replacing LDFLAGS with ${LDFLAGS}")
+message(STATUS "Output file   :${OUTFILE}")
+message(STATUS "new CFLAGS : ${CFLAGS}")
+message(STATUS "new LDFLAGS: ${LDFLAGS}")
 
 configure_file( ${INFILE} ${OUTFILE} )
 
-# Populate the build tree with .go files
-##.. foreach... (not implemented)
-## copy if changed... (not implemented)
-#add_custom_command(
-#  OUTPUT demo.go
-#  COMMAND cp ../demo/demo.go .
-#  COMMENT "Copying .go files"
-#)
-#add_custom_target( gofiles DEPENDS demo.go )
-#add_dependencies( hello gofiles )
 
 # Call 'go build' to generate executable file
-#
-# Note that we set the GOPATH environment variable here before running
-# go build. This is necessary for go build to work. However it may not
-# run correctly depending on the 'shell' program used to execute the
-# 'go build' command. It should work on most Linux/BSD command shells. It may
-# need to be modified for other platforms. 
-
-# GOPATH see https://golang.org/doc/articles/go_command.html
+# GOPATH / GOBIN
+# see https://golang.org/doc/articles/go_command.html
 # note: order matters... binary must come first so bridge.go can be found.
 set(GOPATH ${PROJECT_BINARY_DIR}:${PROJECT_SOURCE_DIR})
 set(GOBIN "${PROJECT_BINARY_DIR}/bin")
 
-message("GOPATH=${GOPATH}")
-message("GOBIN=${GOBIN}")
+message(STATUS "GOPATH=${GOPATH}")
+message(STATUS "GOBIN=${GOBIN}")
 message(STATUS "executable file: ${GOBIN}/${CMAKE_PROJECT_NAME}")
 
 # create shell programs to help user set GOPATH and GOBIN
@@ -114,11 +96,13 @@ file(APPEND ${CSHFILE} "echo GOBIN=$GOBIN\n")
 
 # setup 'go install' for Makefile
 
-# set up static linking of Go code itself. Use a few cmake tricks with quotes
-set(GOFLAGS "--ldflags" "'-extldflags" "\"-static\"'")
+# To dump alot more debug info with go build '-x', set env variable VERBOSE=1
 
-# use the -x option when debugging the build process. it will dump more info 
-#set(GOFLAGS "-x" "--ldflags" "'-extldflags" "\"-static\"'")
+if(DEFINED ENV{VERBOSE})
+  set(GOFLAGS "-x" "--ldflags" "'-extldflags" "\"-static\"'")
+else()
+  set(GOFLAGS "--ldflags" "'-extldflags" "\"-static\"'")
+endif()
 
 #set(CUSTCMD strace -f go install -v hello)
 #set(CUSTCMD go build hello)
