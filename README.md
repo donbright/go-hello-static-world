@@ -6,6 +6,14 @@ This program prints "Hello World". A go language program prints the word
 
 This is a fork of shadowmint's go-hello-static-world project
 
+## Usage
+
+To build and run, copy/paste these commands into a terminal:
+   
+    mkdir build && cd build && cmake ..
+    VERBOSE=1 make
+    ./bin/hello
+
 ## Design
 
 The source tree is layed out as follows:
@@ -18,11 +26,10 @@ The source tree is layed out as follows:
 
 As you can see, this is a sort of 'hybrid' go project layout. It 
 has subdirs under 'src' for go packages. But it also has c code and
-a Cmake build file. To build, run the following command
-   
-    mkdir build && cd build && cmake .. && VERBOSE=1 make
+a Cmake build file.
 
-Cmake & go's builder will go through the following steps:
+During the cmake && make process, Cmake & go's builder will go through 
+the following steps:
 
     Create bridge .go file from the bridge.go.in template
     Create c library (.a/.lib) file from c source code
@@ -47,20 +54,15 @@ Running ./bin/hello should produce output like this:
 
 To rebuild the C code, just type 'make' from the command shell.
 
-To rebuild the 'go' code, it's a bit more complicted. You will need to 
-set your GOBIN and GOPATH environment variables. The values for GOBIN 
-and GOPATH are printed during the cmake process. Here is an example from 
-a machine where the project was git cloned under the /tmp/ directory:
+To rebuild the 'go' code, you need to first set up the GOBIN and GOPATH
+environment variables. These are printed during the 'cmake' run. Cmake also
+generates shell scripts to set them automatically. Run one depending on your shell:
 
-    GOPATH=/tmp/go-hello-static-world/build:/tmp/go-hello-static-world
-    GOBIN=/tmp/go-hello-static-world/build/bin
-
-If you dont know how to set env variables in your shell, do a quick google
-search on it and then you will be able to properly copy/paste those values.
-Or fork/submit a patch to make this easier somehow.
+    . setenv.sh          # for bash shell (typical shell on linux)
+    source setenv.csh    # for csh shell (BSD)
 
 After this you can type 'go build hello' or 'go install hello' and it should
-build and link the 'bin/hello' file again. 
+build and link the 'bin/hello' file as needed. 
 
 However if the bridge code and/or the C code changes, you will need to 
 possibly rerun make and/or cmake to regenerate the C library file (.lib or .a)

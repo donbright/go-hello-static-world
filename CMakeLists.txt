@@ -105,6 +105,27 @@ message("GOPATH=${GOPATH}")
 message("GOBIN=${GOBIN}")
 message(STATUS "executable file: ${GOBIN}/${CMAKE_PROJECT_NAME}")
 
+# create shell programs to help user set GOPATH and GOBIN
+
+set(SHFILE ${PROJECT_BINARY_DIR}/setenv.sh)
+file(WRITE  ${SHFILE} "")
+file(APPEND ${SHFILE} "GOPATH=${GOPATH}\n")
+file(APPEND ${SHFILE} "GOBIN=${GOBIN}\n")
+file(APPEND ${SHFILE} "export GOPATH\n")
+file(APPEND ${SHFILE} "export GOBIN\n")
+file(APPEND ${SHFILE} "echo GOPATH=$GOPATH\n")
+file(APPEND ${SHFILE} "echo GOBIN=$GOBIN\n")
+
+set(CSHFILE ${PROJECT_BINARY_DIR}/setenv.csh)
+file(WRITE  ${CSHFILE} "")
+file(APPEND ${CSHFILE} "setenv GOPATH ${GOPATH}\n")
+file(APPEND ${CSHFILE} "setenv GOBIN ${GOBIN}\n")
+file(APPEND ${CSHFILE} "echo GOPATH=$GOPATH\n")
+file(APPEND ${CSHFILE} "echo GOBIN=$GOBIN\n")
+
+
+# setup 'go install' in Makefiles (some Makefiles under CmakeFiles)
+
 #set(CUSTCMD strace -f go install -v hello)
 #set(CUSTCMD go build hello)
 
