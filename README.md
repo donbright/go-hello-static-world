@@ -31,6 +31,9 @@ builder to rebuild any modified go code. This 'hybrid' build system allows
 This is a basic exploration and learning tool. It is not intended for 
 any fancy use. See file LICENSE-2.0 for more info.
 
+There is also a potential for buggy behavior if you update .c code without
+updating the bridge.go.in file and rebuilding bridge.go (by running Cmake).
+
 ### Design
 
 The source tree is layed out as follows:
@@ -95,7 +98,7 @@ Now you should be able to run go commands by themselves:
 
 ### On the static C glue of bridge.go.in and bridge.go
 
-The magic static glue of the bridge file works using 'cgo' as follows:
+The glue between Go and the static C code works using CMake and Cgo as follows:
 
 bridge.go.in has two lines like this:
 
