@@ -68,12 +68,14 @@ set(INFILE ${PROJECT_SOURCE_DIR}/src/bridge/bridge.go.in)
 set(OUTFILE ${PROJECT_BINARY_DIR}/src/bridge/bridge.go)
 set(C_LIBRARY_PATH ${PROJECT_BINARY_DIR}/lib)
 
+set(CFLAGS "-I${C_INCLUDE_PATH}")
+set(LDFLAGS "-L${C_LIBRARY_PATH} -l${C_LIBRARY_NAME}")
+
 message(STATUS "Creating .go bridge file")
 message(STATUS "Input template:${INFILE}" )
 message(STATUS "   Output file:${OUTFILE}")
-message(STATUS "replacing C_INCLUDE_PATH with ${C_INCLUDE_PATH}")
-message(STATUS "replacing C_LIBRARY_PATH with ${C_LIBRARY_PATH}")
-message(STATUS "replacing C_LIBRARY_NAME with ${C_LIBRARY_NAME}")
+message(STATUS "replacing CFLAGS with ${CFLAGS}")
+message(STATUS "replacing LDFLAGS with ${LDFLAGS}")
 
 configure_file( ${INFILE} ${OUTFILE} )
 
