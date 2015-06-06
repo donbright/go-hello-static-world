@@ -47,11 +47,11 @@ a Cmake build file.
 
 The process is as follows:
 
-    Cmake creates a bridge.go file from the bridge.go.in template
-    Cmake creates a 'Makefile'
-    'make' creates a static C library (.a/.lib file) from c source code
-    'make' calls 'go install' 
-    'go install' builds executable and links with c library using #cgo
+#'''cmake''' creates a bridge.go file from the bridge.go.in template
+#'''cmake''' creates a main Makefile (and sub Makefiles under ./CMakeFiles)
+#'''make''' creates a static C library (.a/.lib file) from c source code
+#'''make''' calls 'go install' 
+#'''go install''' builds executable and links with c library using #cgo
 
 The resulting binary tree will hopefully be as follows:
 
