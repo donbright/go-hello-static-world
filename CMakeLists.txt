@@ -14,25 +14,11 @@
 
 # Modified by Don Bright 2015
 
-#
-# This cmake file is intended to help with the situation where you have
-# a Go language program that needs to call C static libraries. Since
-# Go and C have very different build systems, it is a bit tricky to set up
-# a project where you will be working on both C and Go files simultaneously.
-# This attempts to make that process easier by allowing you to type the
-# familiar 'cmake && make' for the entire process... so that it will 
-# build the C libraries and then start the traditional 'go build' process
-# after those libraries have been built, all in a separate out-of-source
-# binary tree. 
 
-# It creates a .go "bridge" file automatically from a template 'go.in' 
-# file, by modifying the paths in the template file.
-#
-# It also creates all binary code in a separate subdirectory, as is traditional
-# with C programs, but also manages to do this with the Go program.
-
-# C-library files are typically named '.a' files on un*x and '.lib' on Win*
-
+# This cmake file is intended to help with the situation where you have 
+# a Go language program that needs to call C static libraries. Please 
+# see the README.md file for a fuller explanation of how this process 
+# works.
 
 cmake_minimum_required (VERSION 2.8)
 
