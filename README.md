@@ -136,9 +136,9 @@ Untested in this fork.
 This build style can theoretically help when transforming C programs to Go 
 programs, by providing a 'hybrid' system to use during transformation. 
 
-This build style also is a nice way to distribute programs to other 
-people without them having to worry about library versions and 
-installing extra packages.
+Static linking a nice way to distribute programs to other people without 
+them having to worry about library versions and installing extra 
+packages.
 
 Thanks for reading. Thanks shadowmint.
 
