@@ -16,10 +16,8 @@ To build and run, copy/paste these commands into a terminal:
 
 ## Status
 
-This is an hello world program, not guaranteed to do anything but be a 
-basic learning tool. 
-
-The final link is not actually static 
+This is an hello world program, a basic learning tool. It is not intended
+for any professional use. See the license. 
 
 ## Design
 
@@ -78,7 +76,7 @@ and also regenerate the bridge.go glue code.
  
 ## On the static glue of bridge.go.in and bridge.go
 
-The magic static glue of the bridge file works as follows:
+The magic static glue of the bridge file works using 'cgo' as follows:
 
 bridge.go.in has two lines like this:
 
@@ -100,6 +98,8 @@ Untested in this fork.
     2. put all generated files under 'build' directory (bridge.go)
     3. move call of 'go build' into cmake process (go install)
     4. rearrange and simplify directory structure
+    5. link everything statically in the binary, not just the C code
+
 
 ## See Also
 
@@ -116,6 +116,16 @@ and of course some C libraries may not be transformable ever.
 
 Static linking is a nice way to simplify the user experience. 
 No dynamic libraries to worry about.
+
+## How do you know if a file is really statically linked?
+
+ldd and file can help you
+
+    don@serebryanya[build]$ ldd ./bin/hello 
+	not a dynamic executable
+    don@serebryanya[build]$ file bin/hello 
+        bin/hello: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), 
+        statically linked, for GNU/Linux 2.6.24, 
 
 Thanks for reading. Thanks shadowmint.
 

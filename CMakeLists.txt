@@ -126,12 +126,15 @@ file(APPEND ${CSHFILE} "echo GOPATH=$GOPATH\n")
 file(APPEND ${CSHFILE} "echo GOBIN=$GOBIN\n")
 
 
-# setup 'go install' in Makefiles (some Makefiles under CmakeFiles)
+# setup 'go install' for Makefile
+
+# set up static linking of Go code itself. Use a few cmake tricks with quotes
+set(GOFLAGS "--ldflags" "'-extldflags" "\"-static\"'")
 
 #set(CUSTCMD strace -f go install -v hello)
 #set(CUSTCMD go build hello)
 
-set(GOCMD go install -v ${CMAKE_PROJECT_NAME})
+set(GOCMD go install ${GOFLAGS} ${CMAKE_PROJECT_NAME})
 add_custom_command(
   TARGET ${C_LIBRARY_NAME}
   POST_BUILD
