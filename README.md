@@ -5,7 +5,7 @@ This program prints "Hello World". A Go language program prints the word
 'World'. It uses the CMake build system to take care of many details
 so that you can type 'make' to rebuild everything after modifying the source. 
 
-This is a fork of @[https://github.com/shadowmint](shadowmint)'s [https://github.com/shadowmint/go-static-linking](go-static-linking) project
+This is a fork of (https://github.com/shadowmint)[shadowmint]'s (https://github.com/shadowmint/go-static-linking)[go-static-linking] project
 
 ### Usage
 
