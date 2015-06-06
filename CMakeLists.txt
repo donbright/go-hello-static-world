@@ -67,8 +67,8 @@ set(LDFLAGS "-L${C_LIBRARY_PATH} -l${C_LIBRARY_NAME}")
 message(STATUS "Creating .go bridge file")
 message(STATUS "Input template:${INFILE}" )
 message(STATUS "Output file   :${OUTFILE}")
-message(STATUS "new CFLAGS : ${CFLAGS}")
-message(STATUS "new LDFLAGS: ${LDFLAGS}")
+message(STATUS "Output file CFLAGS : ${CFLAGS}")
+message(STATUS "Output file LDFLAGS: ${LDFLAGS}")
 
 configure_file( ${INFILE} ${OUTFILE} )
 
@@ -119,10 +119,16 @@ endif()
 #set(CUSTCMD go build hello)
 
 set(GOCMD go install ${GOFLAGS} ${CMAKE_PROJECT_NAME})
-set(GOCMD GOBIN=${GOBIN} GOPATH=${GOPATH} ${GOCMD})
+message(STATUS "gocmd ${GOCMD}")
+
+set(GOFULLCMD GOBIN=${GOBIN} GOPATH=${GOPATH} ${GOCMD})
+
+# the args to add_custom_target have ';' but i want to print with spaces ' '
+# so pretty print here
+string(REPLACE ";" " " GOCMDPP "${GOFULLCMD}")
 
 add_custom_target( goinstall ALL
-  GOBIN=${GOBIN} GOPATH=${GOPATH} ${GOCMD}
-  COMMENT "Running ${GOCMD}"
+  ${GOFULLCMD}
+  COMMENT "Running ${GOCMDPP}"
   DEPENDS ${C_LIBRARY_NAME}
 )
