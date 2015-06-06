@@ -8,7 +8,7 @@ import "fmt"
 import "C"
 
 func PrintWorld() {
-  fmt.Printf("(Invoking c statically linked library...)\n")
-  C.printworld(10)
-  fmt.Printf("(Done)\n")
+	fmt.Printf("(Invoking c statically linked library...)\n")
+	C.printworld(10)
+	fmt.Printf("(Done)\n")
 }
