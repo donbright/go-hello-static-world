@@ -18,6 +18,15 @@
 # Please see the README.md file for a fuller explanation of how this process 
 # works.
 
+# This is a hybrid build system generator. After Cmake is run:
+#
+# 1. running 'make' will take care of checking C dependencies and 
+# building the .c code. It doesn't deal with .go
+#
+# 2. running 'make' will also run 'go install', but it will be run every time.
+# make itself will not check go dependencies... this is left to 'go' itself.
+
+
 cmake_minimum_required (VERSION 2.8)
 
 project (hello)
@@ -94,10 +103,11 @@ file(APPEND ${CSHFILE} "echo GOPATH=$GOPATH\n")
 file(APPEND ${CSHFILE} "echo GOBIN=$GOBIN\n")
 
 
-# setup 'go install' for Makefile
+# Setup 'go install' for Makefile.
 
 # To dump alot more debug info with go build '-x', set the
-# environment variable VERBOSE=1. (for example, VERBOSE=1 cmake)
+# environment variable VERBOSE=1 before running cmake
+# (for example, VERBOSE=1 cmake)
 
 if(DEFINED ENV{VERBOSE})
   set(GOFLAGS "-v" "-x" "--ldflags" "'-extldflags" "\"-static\"'")
@@ -109,23 +119,10 @@ endif()
 #set(CUSTCMD go build hello)
 
 set(GOCMD go install ${GOFLAGS} ${CMAKE_PROJECT_NAME})
-add_custom_command(
-  TARGET ${C_LIBRARY_NAME}
-  POST_BUILD
-  COMMAND GOBIN=${GOBIN} GOPATH=${GOPATH} ${GOCMD}
+set(GOCMD GOBIN=${GOBIN} GOPATH=${GOPATH} ${GOCMD})
+
+add_custom_target( goinstall ALL
+  GOBIN=${GOBIN} GOPATH=${GOPATH} ${GOCMD}
   COMMENT "Running ${GOCMD}"
+  DEPENDS ${C_LIBRARY_NAME}
 )
-
-# create a 'make.sh' file that will auto-run both 'make' to rebuild C code
-# and 'go install hello' with full static linking go flags. 
-
-set(GOCMD "GOBIN=${GOBIN} GOPATH=${GOPATH} go install -v ${GOFLAGS} ${CMAKE_PROJECT_NAME}")
-string(REPLACE ";" " " GOCMD "${GOCMD}")
-set(MAKESH ${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/make.sh)
-file(WRITE ${MAKESH} "") 
-file(APPEND ${MAKESH} "echo running make\n make\n") 
-file(APPEND ${MAKESH} "echo running ${GOCMD}\n${GOCMD}\n") 
-file(COPY ${MAKESH}
-  DESTINATION ${PROJECT_BINARY_DIR}
-  FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
-file(REMOVE tmp)
