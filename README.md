@@ -35,10 +35,10 @@ any fancy use. See file LICENSE-2.0 for more info.
 
 The source tree is layed out as follows:
 
-    src/hello/hello.go       # main go package, prints hello and calls C
+    src/hello/hello.go       # main go package, prints 'hello' and calls C
     src/bridge/bridge.go.in  # template, used to create bridge.go package
-    src/c/world.c            # c code. all c code lives under 'c' path
-    src/c/world.h            # c header
+    src/c/world.c            # c code to print 'world'.
+    src/c/world.h            # c header. all c code lives under 'c' path
     CMakeLists.txt           # Cmake build file
 
 As you can see, this is a sort of 'hybrid' Go project layout. It 
