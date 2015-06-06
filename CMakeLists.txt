@@ -131,6 +131,9 @@ file(APPEND ${CSHFILE} "echo GOBIN=$GOBIN\n")
 # set up static linking of Go code itself. Use a few cmake tricks with quotes
 set(GOFLAGS "--ldflags" "'-extldflags" "\"-static\"'")
 
+# use the -x option when debugging the build process. it will dump more info 
+#set(GOFLAGS "-x" "--ldflags" "'-extldflags" "\"-static\"'")
+
 #set(CUSTCMD strace -f go install -v hello)
 #set(CUSTCMD go build hello)
 
