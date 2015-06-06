@@ -66,31 +66,25 @@ flag in Go as well as the VERBOSE option to 'make'.
     make
     ./bin/hello
 
-## GOBIN, GOPATH, What do to do after 'make'
+## Running 'go build' afterwards (GOBIN, GOPATH, etc)
 
-To rebuild the C code, just type 'make' from the command shell.
+To rebuild all the C and Go code, you can use the generated shell commmand:
 
-To rebuild the 'Go' code, you need to first set up the GOBIN and GOPATH 
-environment variables. These are printed during the 'cmake' run. Cmake 
-also generates 'setenv' shell scripts to help you these variables 
-without so much typing and copy/paste. Run one depending on your shell:
+    ./make.sh
 
-    . setenv.sh          # for bash/sh/dash shell (typical shell on Linux)
-    source setenv.csh    # for csh shell (typical shell on BSD)
+To run ordinary 'go' commands, you will have to set up the GOBIN and 
+GOPATH environment variables. The CMakeLists.txt generates .sh scripts to 
+help with this. Run one depending on your shell:
+
+    . ./setenv.sh          # for bash/sh/dash shell (typical shell on Linux)
+    source ./setenv.csh    # for csh shell (typical shell on BSD)
 
 Now you should be able to run go commands:
 
-    go build hello       # build the go program
+    go build hello         # build the go program
 
-The CMakeLists.txt also generates a go.sh file to allow you to easily 
-fully static link the Go code as well as the C code, because go itself 
-will not static link .go code by default.
-
-    ./go.sh              # build with full static link flags
-
-If the bridge code and/or the C code changes, you will need to 
-possibly rerun make and/or cmake to regenerate the C library file (.lib or .a)
-and also regenerate the bridge.go glue code.
+The bridge .go.in -> .go process may be a little funky and sometimes require
+a full re-run of 'cmake' on some occasions.
  
 ## On the static C glue of bridge.go.in and bridge.go
 

@@ -116,12 +116,16 @@ add_custom_command(
   COMMENT "Running ${GOCMD}"
 )
 
-# full static linking requires typing a lot of flags. this will
-# create a 'go.sh' file that will include all that detail
+# create a 'make.sh' file that will auto-run both 'make' to rebuild C code
+# and 'go install hello' with full static linking go flags. 
 
+set(GOCMD "GOBIN=${GOBIN} GOPATH=${GOPATH} go install -v ${GOFLAGS} ${CMAKE_PROJECT_NAME}")
 string(REPLACE ";" " " GOCMD "${GOCMD}")
-file(WRITE go.sh "${GOCMD}\n") 
-file(COPY go.sh
+set(MAKESH ${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/make.sh)
+file(WRITE ${MAKESH} "") 
+file(APPEND ${MAKESH} "echo running make\n make\n") 
+file(APPEND ${MAKESH} "echo running ${GOCMD}\n${GOCMD}\n") 
+file(COPY ${MAKESH}
   DESTINATION ${PROJECT_BINARY_DIR}
   FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
 file(REMOVE tmp)
