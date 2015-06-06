@@ -96,10 +96,11 @@ file(APPEND ${CSHFILE} "echo GOBIN=$GOBIN\n")
 
 # setup 'go install' for Makefile
 
-# To dump alot more debug info with go build '-x', set env variable VERBOSE=1
+# To dump alot more debug info with go build '-x', set the
+# environment variable VERBOSE=1. (for example, VERBOSE=1 cmake)
 
 if(DEFINED ENV{VERBOSE})
-  set(GOFLAGS "-x" "--ldflags" "'-extldflags" "\"-static\"'")
+  set(GOFLAGS "-v" "-x" "--ldflags" "'-extldflags" "\"-static\"'")
 else()
   set(GOFLAGS "--ldflags" "'-extldflags" "\"-static\"'")
 endif()
@@ -115,5 +116,12 @@ add_custom_command(
   COMMENT "Running ${GOCMD}"
 )
 
+# full static linking requires typing a lot of flags. this will
+# create a 'go.sh' file that will include all that detail
 
-
+string(REPLACE ";" " " GOCMD "${GOCMD}")
+file(WRITE go.sh "${GOCMD}\n") 
+file(COPY go.sh
+  DESTINATION ${PROJECT_BINARY_DIR}
+  FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+file(REMOVE tmp)
