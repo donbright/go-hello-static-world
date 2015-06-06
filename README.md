@@ -84,8 +84,8 @@ call setup in the Makefile, you will have to set up the GOBIN and
 GOPATH environment variables. The CMakeLists.txt generates .sh scripts to 
 help with this. Run one depending on your shell:
 
-    . ./setenv.sh          # for bash/sh/dash shell (typical shell on Linux)
-    source ./setenv.csh    # for csh shell (typical shell on BSD)
+    . ./CMakeFiles/setenv.sh       # for bash shell (typical shell on Linux)
+    source ./CMakeFiles/setenv.csh # for csh shell (typical shell on BSD)
 
 Now you should be able to run go commands by themselves:
 
